@@ -1,0 +1,105 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema bookReviews
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema bookReviews
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `bookReviews` DEFAULT CHARACTER SET utf8 ;
+USE `bookReviews` ;
+
+-- -----------------------------------------------------
+-- Table `bookReviews`.`users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookReviews`.`users` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(45) NULL,
+  `last_name` VARCHAR(45) NULL,
+  `alias` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  `password` VARCHAR(45) NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `bookReviews`.`authors`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookReviews`.`authors` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `author_name` VARCHAR(45) NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `bookReviews`.`books`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookReviews`.`books` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `book_title` VARCHAR(45) NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
+  `author_id` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_books_authors_idx` (`author_id` ASC),
+  CONSTRAINT `fk_books_authors`
+    FOREIGN KEY (`author_id`)
+    REFERENCES `bookReviews`.`authors` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `bookReviews`.`reviews`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookReviews`.`reviews` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `review` VARCHAR(45) NULL,
+  `rating` INT NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
+  `book_id` INT NULL,
+  `user_id` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_reviews_books1_idx` (`book_id` ASC),
+  INDEX `fk_reviews_users1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_reviews_books1`
+    FOREIGN KEY (`book_id`)
+    REFERENCES `bookReviews`.`books` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_reviews_users1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `bookReviews`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `bookReviews`.`authors`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookReviews`.`authors` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `author_name` VARCHAR(45) NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
